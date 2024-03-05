@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UtangQAppWebForm", "UtangQAppWebForm\UtangQAppWebForm.vbproj", "{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtangQAppBO", "UtangQAppBO\UtangQAppBO.csproj", "{570ADDB0-38B6-4047-A575-2E08CBE6D221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtangQAppDAL", "UtangQAppDAL\UtangQAppDAL.csproj", "{EB7A84AD-7D18-4E13-A90D-4C1B5290B7F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtangQAppBLL", "UtangQAppBLL\UtangQAppBLL.csproj", "{1EC74B43-74C6-459C-A303-2C87F91201AC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{570ADDB0-38B6-4047-A575-2E08CBE6D221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{570ADDB0-38B6-4047-A575-2E08CBE6D221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{570ADDB0-38B6-4047-A575-2E08CBE6D221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{570ADDB0-38B6-4047-A575-2E08CBE6D221}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB7A84AD-7D18-4E13-A90D-4C1B5290B7F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB7A84AD-7D18-4E13-A90D-4C1B5290B7F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB7A84AD-7D18-4E13-A90D-4C1B5290B7F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB7A84AD-7D18-4E13-A90D-4C1B5290B7F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EC74B43-74C6-459C-A303-2C87F91201AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC74B43-74C6-459C-A303-2C87F91201AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC74B43-74C6-459C-A303-2C87F91201AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC74B43-74C6-459C-A303-2C87F91201AC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F360F5FE-5784-42CC-ABC0-43ACA50E77E3}
+	EndGlobalSection
+EndGlobal
