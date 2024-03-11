@@ -79,20 +79,32 @@ namespace UtangQAppBLL
 
         public WalletDTO ReadWalletbyUserID(int UserID)
         {
-            WalletDTO walletDTO = new WalletDTO();
             try
             {
                 var wallet = _walletDAL.ReadWalletbyUserID(UserID);
-                walletDTO.WalletID = wallet.WalletID;
-                walletDTO.UserID = wallet.UserID;
-                walletDTO.WalletBalance = wallet.WalletBalance;
-                return walletDTO;
+
+                // Check if wallet is null
+                if (wallet == null)
+                {
+                    return null; // Return null if wallet is not found
+                }
+
+                // Create WalletDTO object and populate its properties
+                WalletDTO walletDTO = new WalletDTO
+                {
+                    WalletID = wallet.WalletID,
+                    UserID = wallet.UserID,
+                    WalletBalance = wallet.WalletBalance
+                };
+
+                return walletDTO; // Return the populated WalletDTO object
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+
 
         public void Update(WalletDTO entity)
         {

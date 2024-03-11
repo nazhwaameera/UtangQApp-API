@@ -16,6 +16,7 @@ namespace UtangQAppBLL
         {
             _billDAL = new BillDAL();
         }
+
         public void Create(BillCreateDTO entity)
         {
             try
@@ -128,6 +129,19 @@ namespace UtangQAppBLL
             }
         }
 
+        public decimal CalculateTotalUnassignedBillAmount(int UserId)
+        {
+            try
+            {
+                decimal result = _billDAL.CalculateTotalUnassignedBillAmount(UserId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public IEnumerable<BillDTO> ReadUserBills(int UserId)
         {
             List<BillDTO> bills = new List<BillDTO>();
@@ -161,7 +175,33 @@ namespace UtangQAppBLL
                     BillDescription = entity.BillDescription,
                     OwnerContribution = entity.OwnerContribution
                 };
-                _billDAL.Create(bill);
+                _billDAL.Update(bill);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public decimal GetTotalPendingAmountOwedProcedure(int RecipientUserID)
+        {
+            try
+            {
+                decimal result = _billDAL.GetTotalPendingAmountOwedProcedure(RecipientUserID);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public decimal GetTotalBillAmountPaidProcedure(int RecipientUserID)
+        {
+            try
+            {
+                decimal result = _billDAL.GetTotalBillAmountPaidProcedure(RecipientUserID);
+                return result;
             }
             catch (Exception ex)
             {

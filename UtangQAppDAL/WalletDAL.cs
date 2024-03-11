@@ -103,9 +103,17 @@ namespace UtangQAppDAL
                 var strSql = "Users.ReadWalletbyUserID";
                 var param = new { UserID = UserID };
                 var result = conn.QuerySingleOrDefault<Wallet>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
-                return result;
+
+                // Check if the result is null
+                if (result == null)
+                {
+                    return null; // Return null if wallet does not exist
+                }
+
+                return result; // Return the wallet if it exists
             }
         }
+
 
         public void Update(Wallet entity)
         {
@@ -142,20 +150,17 @@ namespace UtangQAppDAL
         {
             using (SqlConnection conn = new SqlConnection(GetConnectionString()))
             {
-                var strSql = "Transactions.UpdateWalletBalance";
-                var param = new 
-                { 
-                    UserID = UserID,
-                    Amount = Amount,
-                    OperationFlag = OperationFlag
-                };
                 try
                 {
-                    int result = conn.Execute(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
-                    if (result != 1)
+                    var strSql = "Transactions.UpdateWalletBalance";
+                    var param = new
                     {
-                        throw new ArgumentException("Update wallet balance data failed..");
-                    }
+                        UserID = UserID,
+                        Amount = Amount,
+                        OperationFlag = OperationFlag
+                    };
+
+                    conn.Execute(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
                 }
                 catch (SqlException sqlEx)
                 {

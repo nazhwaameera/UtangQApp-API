@@ -14,8 +14,4 @@
     <ProjectReference Include="..\UtangQAppDAL\UtangQAppDAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\Report\" />
-  </ItemGroup>
-
 </Project>

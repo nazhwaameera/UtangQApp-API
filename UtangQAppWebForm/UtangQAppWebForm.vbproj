@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="BillRecipientPage.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -160,6 +161,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="LoginPage.aspx" />
+    <Content Include="PaymentHistoryPage.aspx" />
     <Content Include="ProfilePage.aspx" />
     <Content Include="RegistrationPage.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -230,6 +232,13 @@
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="BillRecipientPage.aspx.designer.vb">
+      <DependentUpon>BillRecipientPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BillRecipientPage.aspx.vb">
+      <DependentUpon>BillRecipientPage.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Contact.aspx.designer.vb">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
@@ -279,6 +288,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="PaymentHistoryPage.aspx.designer.vb">
+      <DependentUpon>PaymentHistoryPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PaymentHistoryPage.aspx.vb">
+      <DependentUpon>PaymentHistoryPage.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="ProfilePage.aspx.designer.vb">
       <DependentUpon>ProfilePage.aspx</DependentUpon>

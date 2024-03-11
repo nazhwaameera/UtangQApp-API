@@ -7,5 +7,6 @@ namespace UtangQAppDAL.Interfaces
 {
     public interface IWalletTransaction : ICrud<WalletTransaction>
     {
+        IEnumerable<WalletTransaction> ReadWalletTransactionbyUserID (int UserID);
     }
 }

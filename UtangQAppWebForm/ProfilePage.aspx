@@ -9,6 +9,7 @@
                         <h5 class="card-title">User Profile</h5>
                         <br />
                         <asp:Label ID="ltMessage" runat="server" Visible="false"></asp:Label>
+                        <asp:Label ID="Label2" runat="server" Visible="true"></asp:Label>
                         <asp:GridView ID="gvUserProfile" runat="server" CssClass="table table-bordered" AutoGenerateColumns="false">
                             <Columns>
                                 <asp:BoundField DataField="Username" HeaderText="Username" />
@@ -19,7 +20,7 @@
                         </asp:GridView>
                         <asp:Button ID="btnEditProfile" runat="server" Text="Edit Profile" CssClass="btn btn-primary mt-2" OnClick="btnEditProfile_Click" />
                         <asp:Button ID="btnDeleteAccount" runat="server" Text="Delete Account" CssClass="btn btn-danger mt-2" OnClick="btnDeleteAccount_Click" />
-                        <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="btn btn-primary mt-2" />
+                        <asp:Button ID="btnDeleteWallet" runat="server" Text="Delete Wallet" CssClass="btn btn-danger mt-2" Visible="false" OnClick="btnDeleteWallet_Click" />
                     </div>
                 </div>
             </div>
@@ -78,6 +79,28 @@
                 <!-- Modal footer -->
                 <div class="modal-footer">
                     <asp:Button Text="Delete Account" ID="btnDelete" CssClass="btn btn-danger btn-sm" runat="server" OnClick="btnDelete_Click" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Delete Wallet -->
+    <div class="modal" id="myModalDeleteWallet">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Wallet</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <asp:HiddenField ID="hidWalletID_ModalDelete" runat="server" />
+                    <asp:Label ID="Label1" runat="server" Text="Are you sure you want to delete the wallet account connected to this profile?"></asp:Label>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <asp:Button Text="Delete Wallet" ID="btnDeleteWalletModal" CssClass="btn btn-danger btn-sm" runat="server" OnClick="btnDeleteWalletModal_Click" />
                 </div>
             </div>
         </div>

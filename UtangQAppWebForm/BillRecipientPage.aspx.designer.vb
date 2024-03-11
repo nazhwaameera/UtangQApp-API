@@ -11,149 +11,122 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class ProfilePage
+Partial Public Class BillRecipientPage
 
     '''<summary>
-    '''ltMessage control.
+    '''btnCreateBillRecipient control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ltMessage As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnCreateBillRecipient As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''Label2 control.
+    '''lblBillRecipientDetails control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblBillRecipientDetails As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''gvUserProfile control.
+    '''lvBillRecipients control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents gvUserProfile As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents lvBillRecipients As Global.System.Web.UI.WebControls.ListView
 
     '''<summary>
-    '''btnEditProfile control.
+    '''hiddenBillRecipientID_Modal control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnEditProfile As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents hiddenBillRecipientID_Modal As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
-    '''btnDeleteAccount control.
+    '''lblConfirmationMessageBillRecipient control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDeleteAccount As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents lblConfirmationMessageBillRecipient As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''btnDeleteWallet control.
+    '''btnConfirmPaymentModal control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDeleteWallet As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnConfirmPaymentModal As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''txtUsernameEdit control.
+    '''hiddenBillID_Modal control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtUsernameEdit As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents hiddenBillID_Modal As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
-    '''txtUserEmailEdit control.
+    '''ddlRecipientUser control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtUserEmailEdit As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ddlRecipientUser As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''txtUserFullNameEdit control.
+    '''txtTotalUsers control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtUserFullNameEdit As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtTotalUsers As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''txtUserPhoneNumberEdit control.
+    '''chkSplitEvenly control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtUserPhoneNumberEdit As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents chkSplitEvenly As Global.System.Web.UI.WebControls.CheckBox
 
     '''<summary>
-    '''btnEdit control.
+    '''ddlTaxStatus control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnEdit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents ddlTaxStatus As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''lblConfirmationMessage control.
+    '''txtTaxCharged control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblConfirmationMessage As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents txtTaxCharged As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''btnDelete control.
+    '''btnCreateBillRecipientModal control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnDelete As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
-    '''hidWalletID_ModalDelete control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents hidWalletID_ModalDelete As Global.System.Web.UI.WebControls.HiddenField
-
-    '''<summary>
-    '''Label1 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''btnDeleteWalletModal control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnDeleteWalletModal As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCreateBillRecipientModal As Global.System.Web.UI.WebControls.Button
 End Class

@@ -24,7 +24,7 @@ Public Class LoginPage
                 Session("IsLoggedIn") = True
                 Session("LoginTime") = DateTime.Now.ToString("HH:mm:ss dd-MM-yyyy")
 
-                Response.Redirect("ProfilePage.aspx")
+                Response.Redirect("DashboardPage.aspx")
             Else
                 lblErrorMessage.Text = "Your account has been locked. Please contact support."
                 lblErrorMessage.Visible = True

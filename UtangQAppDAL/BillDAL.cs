@@ -108,6 +108,7 @@ namespace UtangQAppDAL
                 var strSql = "Users.UpdateBill";
                 var param = new
                 {
+                    BillID = entity.BillID,
                     UserID = entity.UserID,
                     BillAmount = entity.BillAmount,
                     BillDate = entity.BillDate,
@@ -173,6 +174,39 @@ namespace UtangQAppDAL
             {
                 var strSql = "Transactions.GetTotalBillAmountCreatedPaidProcedure";
                 var param = new { UserID = UserId };
+                var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        public decimal CalculateTotalUnassignedBillAmount(int UserId)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                var strSql = "Transactions.CalculateTotalUnassignedBillAmount";
+                var param = new { UserID = UserId };
+                var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        public decimal GetTotalPendingAmountOwedProcedure(int RecipientUserID)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                var strSql = "Transactions.GetTotalPendingAmountOwedProcedure";
+                var param = new { RecipientUserID = RecipientUserID };
+                var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        public decimal GetTotalBillAmountPaidProcedure(int RecipientUserID)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+                var strSql = "Transactions.GetTotalBillAmountPaidProcedure";
+                var param = new { RecipientUserID = RecipientUserID };
                 var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
                 return result;
             }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UtangQAppBLL.DTOs.Transaction
+namespace UtangQAppBO
 {
-    public class BillRecipientCreateDTO
+    public class BillRecipientCreate
     {
         public int BillID { get; set; }
         public int RecipientUserID { get; set; }

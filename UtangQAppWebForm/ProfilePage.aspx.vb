@@ -4,21 +4,31 @@ Imports UtangQAppBLL.DTOs.User
 Public Class ProfilePage
     Inherits System.Web.UI.Page
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not IsPostBack Then
-            gvUserProfileBind()
-        End If
-    End Sub
+    Dim walletBll As New WalletBLL()
+    Dim billRecipientBLL As New BillRecipientBLL()
+
+    Dim userId As Integer = 9
+
+#Region "Binding Data"
     Private Sub gvUserProfileBind()
         Dim userBLL As New UserBLL()
         'Dim users As IEnumerable(Of UserDTO) = userBLL.GetAll()
-        Dim user As UserDTO = userBLL.Get(8)
+        Dim user As UserDTO = userBLL.Get(userId)
         'UserGridView.DataSource = users
         Dim userList As New List(Of UserDTO)
         userList.Add(user)
         ' Bind the List(Of UserDTO) to the GridView
         gvUserProfile.DataSource = userList
         gvUserProfile.DataBind()
+    End Sub
+
+    Sub LoadDataWallet()
+        Dim wallet As WalletDTO = WalletBLL.ReadWalletbyUserID(userId)
+        If wallet IsNot Nothing Then
+            btnDeleteWallet.Visible = True
+            hidWalletID_ModalDelete.Value = wallet.WalletID
+            Label2.Text = hidWalletID_ModalDelete.Value
+        End If
     End Sub
 
     Sub GetEditProfile(id As Integer)
@@ -41,15 +51,19 @@ Public Class ProfilePage
             ltMessage.Text = "<span class='alert alert-danger'>Error: " & ex.Message & "</span><br/><br/>"
         End Try
     End Sub
+
+#End Region
+
+#Region "Handling Button"
     Protected Sub btnEditProfile_Click(sender As Object, e As EventArgs)
-        GetEditProfile(8)
+        GetEditProfile(userId)
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OpenModalScript", "$(window).on('load',function(){$('#myModalEdit').modal('show');})", True)
     End Sub
 
     Protected Sub btnEdit_Click(sender As Object, e As EventArgs)
         Try
             Dim userBLL As New UserBLL()
-            Dim user As UserDTO = userBLL.Get(8)
+            Dim user As UserDTO = userBLL.Get(userId)
             Dim userUpdate As New UserDTO
             userUpdate.UserID = user.UserID
             userUpdate.Username = txtUsernameEdit.Text
@@ -76,17 +90,42 @@ Public Class ProfilePage
     Protected Sub btnDeleteAccount_Click(sender As Object, e As EventArgs)
         lblConfirmationMessage.Text = "Are you sure to delete this account? "
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OpenModalScript", "$(window).on('load',function(){$('#myModalDelete').modal('show');})", True)
-
     End Sub
 
     Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
         Try
             Dim userBLL As New UserBLL()
-            userBLL.Delete(11)
+            userBLL.Delete(userId)
 
             Response.Redirect("LoginPage.aspx")
         Catch ex As Exception
             ltMessage.Text = "<span class='alert alert-danger'>Error: " & ex.Message & "</span><br/><br/>"
         End Try
     End Sub
+
+    Protected Sub btnDeleteWallet_Click(sender As Object, e As EventArgs)
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OpenModalScript", "$(window).on('load',function(){$('#myModalDeleteWallet').modal('show');})", True)
+    End Sub
+
+    Protected Sub btnDeleteWalletModal_Click(sender As Object, e As EventArgs)
+        Try
+            walletBll.Delete(hidWalletID_ModalDelete.Value)
+
+            LoadDataWallet()
+            ltMessage.Visible = True
+            ltMessage.Text = "<span class='alert alert-success'>Bill deleted successfully</span><br/><br/>"
+        Catch ex As Exception
+            ltMessage.Visible = True
+            ltMessage.Text = "<span class='alert alert-danger'>Error: " & ex.Message & "</span><br/><br/>"
+        End Try
+    End Sub
+#End Region
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Not IsPostBack Then
+            gvUserProfileBind()
+            LoadDataWallet()
+        End If
+    End Sub
+
 End Class
