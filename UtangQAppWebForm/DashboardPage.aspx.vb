@@ -10,15 +10,11 @@ Public Class DashboardPage
     Dim billRecipientDTO As New BillRecipientDTO
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Session("IsLoggedIn") IsNot Nothing AndAlso Session("IsLoggedIn").ToString() = "True" Then
-            If Not IsPostBack Then
-                Dim userId As Integer = Session("UserID")
-                LoadDataWallet(userId)
-                LoadDataBillSummary(userId)
-                LoadDataBills(userId)
-            End If
-        Else
-            Response.Redirect("LoginPage.aspx")
+        If Not IsPostBack Then
+            Dim userId As Integer = Session("UserID")
+            LoadDataWallet(userId)
+            LoadDataBillSummary(userId)
+            LoadDataBills(userId)
         End If
     End Sub
 
@@ -100,13 +96,13 @@ Public Class DashboardPage
     Protected Sub btnCreateWallet_Click(sender As Object, e As EventArgs)
         Try
             Dim wallet As New WalletCreateDTO
-            wallet.UserID = userId
+            wallet.UserID = Session("UserID")
             wallet.WalletBalance = txtWalletBalance.Text
 
             walletBll.Create(wallet)
 
             btnAddWallet.Visible = False
-            LoadDataWallet(userId)
+            LoadDataWallet(Session("UserID"))
 
             ltMessageWallet.Visible = True
             ltMessageWallet.Text = "<span class='alert alert-success'>Wallet created successfully</span><br/><br/>"
@@ -124,7 +120,7 @@ Public Class DashboardPage
     Protected Sub btnCreateBill_Click(sender As Object, e As EventArgs)
         Try
             Dim bill As New BillCreateDTO
-            bill.UserID = userId
+            bill.UserID = Session("UserID")
             bill.BillAmount = txtBillAmount.Text
             bill.BillDate = txtBillDate.Text
             bill.BillDescription = txtBillDescription.Text
@@ -133,8 +129,8 @@ Public Class DashboardPage
             billBLL.Create(bill)
 
             lvBillsCreated.DataBind()
-            LoadDataBills(userId)
-            LoadDataBillSummary(userId)
+            LoadDataBills(Session("UserID"))
+            LoadDataBillSummary(Session("UserID"))
 
             ltMessageBill.Visible = True
             ltMessageBill.Text = "<span class='alert alert-success'>Bill created successfully</span><br/><br/>"
@@ -149,7 +145,7 @@ Public Class DashboardPage
         Try
             Dim bill As New BillDTO
             bill.BillID = hidBillID_Modal.Value
-            bill.UserID = userId
+            bill.UserID = Session("UserID")
             bill.BillAmount = txtEditBillAmount.Text
             bill.BillDate = txtEditBillDate.Text
             bill.BillDescription = txtEditBillDescription.Text
@@ -158,8 +154,8 @@ Public Class DashboardPage
             billBLL.Update(bill)
 
             lvBillsCreated.DataBind()
-            LoadDataBills(userId)
-            LoadDataBillSummary(userId)
+            LoadDataBills(Session("UserID"))
+            LoadDataBillSummary(Session("UserID"))
 
             ltMessageBill.Visible = True
             ltMessageBill.Text = "<span class='alert alert-success'>Bill updated successfully</span><br/><br/>"
@@ -176,9 +172,9 @@ Public Class DashboardPage
 
     Protected Sub btnUpdateWalletBalance_Click(sender As Object, e As EventArgs)
         Try
-            walletBll.UpdateWalletBalance(userId, txtBalanceAmount.Text, "A")
+            walletBll.UpdateWalletBalance(Session("UserID"), txtBalanceAmount.Text, "A")
 
-            LoadDataWallet(userId)
+            LoadDataWallet(Session("UserID"))
 
             ltMessageWallet.Visible = True
             ltMessageWallet.Text = "<span class='alert alert-success'>Wallet balance updated</span><br/><br/>"
@@ -192,8 +188,8 @@ Public Class DashboardPage
     Protected Sub btnDeleteBill_Click(sender As Object, e As EventArgs)
         Try
             billBLL.Delete(hidBillID_ModalDelete.Value)
-            LoadDataBills(userId)
-            LoadDataBillSummary(userId)
+            LoadDataBills(Session("UserID"))
+            LoadDataBillSummary(Session("UserID"))
             ltMessageBill.Visible = True
             ltMessageBill.Text = "<span class='alert alert-success'>Bill deleted successfully</span><br/><br/>"
         Catch ex As Exception

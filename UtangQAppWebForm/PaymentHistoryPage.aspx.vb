@@ -14,10 +14,15 @@ Public Class PaymentHistoryPage
     Dim taxStatusDTO As New TaxStatusDTO
     Dim paymentReceiptDTO As New PaymentReceiptDTO
 
-    Dim userId As Integer = 6
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Not IsPostBack Then
+            Dim userId As Integer = Session("UserID")
+            LoadDataBillRecipients(userId)
+        End If
+    End Sub
 
 #Region "Binding Data"
-    Sub LoadDataBillRecipients()
+    Sub LoadDataBillRecipients(userId)
         Dim billRecipients As IEnumerable(Of BillRecipientDTO) = billRecipientBLL.ReadBillRecipientByRecipientUserID(userId)
         lvBillRecipientbyUserID.DataSource = billRecipients
         lvBillRecipientbyUserID.DataBind()
@@ -32,7 +37,7 @@ Public Class PaymentHistoryPage
     Protected Sub btnCreatePayment_Click(sender As Object, e As EventArgs)
         Try
             paymentReceiptBLL.CreatePaymentReceiptAndUpdateStatus(hiddenBillRecipientID_Modal.Value, "example.com")
-            LoadDataBillRecipients()
+            LoadDataBillRecipients(Session("UserID"))
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "CloseModalScript", "$('#myModalCreatePayment').modal('hide');", True)
         Catch ex As Exception
             lblBillRecipientDetails.Visible = True
@@ -81,11 +86,6 @@ Public Class PaymentHistoryPage
         End If
     End Sub
 #End Region
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not IsPostBack Then
-            LoadDataBillRecipients()
-        End If
-    End Sub
 
 
 End Class

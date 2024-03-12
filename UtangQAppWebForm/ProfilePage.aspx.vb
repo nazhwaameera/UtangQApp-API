@@ -7,10 +7,17 @@ Public Class ProfilePage
     Dim walletBll As New WalletBLL()
     Dim billRecipientBLL As New BillRecipientBLL()
 
-    Dim userId As Integer = 9
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        If Not IsPostBack Then
+            Dim userId As Integer = Session("UserID")
+            gvUserProfileBind(userId)
+            LoadDataWallet(userId)
+        End If
+    End Sub
+
 
 #Region "Binding Data"
-    Private Sub gvUserProfileBind()
+    Private Sub gvUserProfileBind(userId)
         Dim userBLL As New UserBLL()
         'Dim users As IEnumerable(Of UserDTO) = userBLL.GetAll()
         Dim user As UserDTO = userBLL.Get(userId)
@@ -22,8 +29,8 @@ Public Class ProfilePage
         gvUserProfile.DataBind()
     End Sub
 
-    Sub LoadDataWallet()
-        Dim wallet As WalletDTO = WalletBLL.ReadWalletbyUserID(userId)
+    Sub LoadDataWallet(userId)
+        Dim wallet As WalletDTO = walletBll.ReadWalletbyUserID(userId)
         If wallet IsNot Nothing Then
             btnDeleteWallet.Visible = True
             hidWalletID_ModalDelete.Value = wallet.WalletID
@@ -56,14 +63,14 @@ Public Class ProfilePage
 
 #Region "Handling Button"
     Protected Sub btnEditProfile_Click(sender As Object, e As EventArgs)
-        GetEditProfile(userId)
+        GetEditProfile(Session("UserID"))
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "OpenModalScript", "$(window).on('load',function(){$('#myModalEdit').modal('show');})", True)
     End Sub
 
     Protected Sub btnEdit_Click(sender As Object, e As EventArgs)
         Try
             Dim userBLL As New UserBLL()
-            Dim user As UserDTO = userBLL.Get(userId)
+            Dim user As UserDTO = userBLL.Get(Session("UserID"))
             Dim userUpdate As New UserDTO
             userUpdate.UserID = user.UserID
             userUpdate.Username = txtUsernameEdit.Text
@@ -75,7 +82,7 @@ Public Class ProfilePage
             userBLL.Update(userUpdate)
 
             gvUserProfile.DataBind()
-            gvUserProfileBind()
+            gvUserProfileBind(Session("UserID"))
 
             ltMessage.Visible = True
             ltMessage.Text = "<span class='alert alert-success'>User profile updated successfully</span><br/><br/>"
@@ -95,7 +102,7 @@ Public Class ProfilePage
     Protected Sub btnDelete_Click(sender As Object, e As EventArgs)
         Try
             Dim userBLL As New UserBLL()
-            userBLL.Delete(userId)
+            userBLL.Delete(Session("UserID"))
 
             Response.Redirect("LoginPage.aspx")
         Catch ex As Exception
@@ -111,7 +118,7 @@ Public Class ProfilePage
         Try
             walletBll.Delete(hidWalletID_ModalDelete.Value)
 
-            LoadDataWallet()
+            LoadDataWallet(Session("UserID"))
             ltMessage.Visible = True
             ltMessage.Text = "<span class='alert alert-success'>Bill deleted successfully</span><br/><br/>"
         Catch ex As Exception
@@ -121,11 +128,6 @@ Public Class ProfilePage
     End Sub
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If Not IsPostBack Then
-            gvUserProfileBind()
-            LoadDataWallet()
-        End If
-    End Sub
+
 
 End Class

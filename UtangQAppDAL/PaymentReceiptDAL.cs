@@ -37,7 +37,7 @@ namespace UtangQAppDAL
                 try
                 {
                     int result = conn.Execute(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
-                    if (result != 4)
+                    if (result != 5)
                     {
                         throw new ArgumentException("Create payment receipt data failed..");
                     }
