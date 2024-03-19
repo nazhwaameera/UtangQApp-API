@@ -208,5 +208,70 @@ namespace UtangQAppBLL
                 throw ex;
             }
         }
-    }
+
+		public decimal GetTotalBillAmountCreatedAcceptedProcedure(int UserId)
+		{
+			try
+			{
+				decimal result = _billDAL.GetTotalBillAmountCreatedAcceptedProcedure(UserId);
+				return result;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public decimal GetTotalBillAmountCreatedRejectedProcedure(int UserId)
+		{
+			try
+			{
+				decimal result = _billDAL.GetTotalBillAmountCreatedRejectedProcedure(UserId);
+				return result;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public decimal GetTotalBillAmountCreatedAwaitingProcedure(int UserId)
+		{
+			try
+			{
+				decimal result = _billDAL.GetTotalBillAmountCreatedAwaitingProcedure(UserId);
+				return result;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public decimal GetTotalBillAmountAcceptedProcedure(int RecipientUserID)
+		{
+			try
+			{
+				decimal result = _billDAL.GetTotalBillAmountAcceptedProcedure(RecipientUserID);
+				return result;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public decimal GetTotalBillAmountAwaitingProcedure(int RecipientUserID)
+		{
+			try
+			{
+				decimal result = _billDAL.GetTotalBillAmountAwaitingProcedure(RecipientUserID);
+				return result;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+	}
 }

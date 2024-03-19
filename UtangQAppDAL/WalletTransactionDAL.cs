@@ -15,7 +15,8 @@ namespace UtangQAppDAL
     {
         private string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
+            return Helper.GetConnectionString();
+            //return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
         }
         public void Create(WalletTransaction entity)
         {

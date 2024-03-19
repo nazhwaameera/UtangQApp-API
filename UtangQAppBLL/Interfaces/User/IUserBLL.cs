@@ -10,5 +10,7 @@ namespace UtangQAppBLL.Interfaces.User
         void Create(UserCreateDTO entity);
         UserDTO LoginUser(string Username, string UserPassword);
         UserDTO GetByUsername(string Username);
-    }
+		IEnumerable<UserDTO> GetFriends(int FriendshipID);
+		IEnumerable<UserDTO> GetNonFriends(int FriendshipID);
+	}
 }

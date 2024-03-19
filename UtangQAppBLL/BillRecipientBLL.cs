@@ -115,7 +115,19 @@ namespace UtangQAppBLL
             return billRecipientDTOs;
         }
 
-        public IEnumerable<BillRecipientDTO> ReadBillRecipientByRecipientUserID(int RecipientUserID)
+		public void HandleIncomingBillRecipient(int BillRecipientID, int NewStatusID)
+		{
+			try
+            {
+				_billRecipientDAL.HandleIncomingBillRecipient(BillRecipientID, NewStatusID);
+			}
+			catch (Exception ex)
+            {
+				throw ex;
+			}
+		}
+
+		public IEnumerable<BillRecipientDTO> ReadBillRecipientByRecipientUserID(int RecipientUserID)
         {
             List<BillRecipientDTO> billRecipientDTOs = new List<BillRecipientDTO>();
             var billRecipients = _billRecipientDAL.ReadBillRecipientByRecipientUserID(RecipientUserID);
@@ -136,7 +148,50 @@ namespace UtangQAppBLL
             return billRecipientDTOs;
         }
 
-        public void Update(BillRecipientDTO entity)
+		public IEnumerable<BillRecipientWithDescDTO> ReadBillRecipientByRecipientUserIDWithDescription(int RecipientUserID)
+		{
+            List<BillRecipientWithDescDTO> billRecipientDTOs = new List<BillRecipientWithDescDTO>();
+			try
+            {
+                var billRecipients = _billRecipientDAL.ReadBillRecipientByRecipientUserIDWithDescription(RecipientUserID);
+                foreach (var billRecipient in billRecipients)
+                {
+					BillRecipientWithDescDTO billRecipientDTO = new BillRecipientWithDescDTO
+                    {
+						BillRecipientID = billRecipient.BillRecipientID,
+						BillID = billRecipient.BillID,
+                        BillRecipientAmount = billRecipient.BillRecipientAmount,
+						BillDescription = billRecipient.BillDescription,
+						Username = billRecipient.Username,
+						RecipientUserID = billRecipient.RecipientUserID,
+						SentDate = billRecipient.SentDate,
+						BillRecipientStatus = billRecipient.BillRecipientStatus,
+                        BillRecipientTax = billRecipient.BillRecipientTax,
+					};
+					billRecipientDTOs.Add(billRecipientDTO);
+				}
+                return billRecipientDTOs;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+		}
+
+		public decimal TotalBillRecipientAmountByBillID(int BillID)
+		{
+			try
+            {
+                decimal result = _billRecipientDAL.TotalBillRecipientAmountByBillID(BillID);
+                return result;
+            }
+            catch (Exception ex)
+            {
+				throw ex;
+			}
+		}
+
+		public void Update(BillRecipientDTO entity)
         {
             try
             {

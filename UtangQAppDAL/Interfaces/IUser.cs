@@ -9,5 +9,8 @@ namespace UtangQAppDAL.Interfaces
     {
         User LoginUser (string Username, string UserPassword);
         User GetByUsername(string Username);
-    }
+        IEnumerable<User> GetFriends(int FriendshipID);
+        IEnumerable<User> GetNonFriends(int FriendshipID);
+
+	}
 }

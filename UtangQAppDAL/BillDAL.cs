@@ -15,7 +15,8 @@ namespace UtangQAppDAL
     {
         private string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
+            return Helper.GetConnectionString();
+            //return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
         }
 
         public void Create(Bill entity)
@@ -211,5 +212,60 @@ namespace UtangQAppDAL
                 return result;
             }
         }
-    }
+
+		public decimal GetTotalBillAmountCreatedAcceptedProcedure(int UserId)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Transactions.GetTotalBillAmountCreatedAcceptedProcedure";
+				var param = new { UserID = UserId };
+				var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public decimal GetTotalBillAmountCreatedRejectedProcedure(int UserId)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Transactions.GetTotalBillAmountCreatedRejectedProcedure";
+				var param = new { UserID = UserId };
+				var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public decimal GetTotalBillAmountCreatedAwaitingProcedure(int UserId)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Transactions.GetTotalBillAmountCreatedAwaitingProcedure";
+				var param = new { UserID = UserId };
+				var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public decimal GetTotalBillAmountAcceptedProcedure(int RecipientUserID)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Transactions.GetTotalBillAmountAcceptedProcedure";
+				var param = new { RecipientUserID = RecipientUserID };
+				var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public decimal GetTotalBillAmountAwaitingProcedure(int RecipientUserID)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Transactions.GetTotalBillAmountAwaitingProcedure";
+				var param = new { RecipientUserID = RecipientUserID };
+				var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+	}
 }

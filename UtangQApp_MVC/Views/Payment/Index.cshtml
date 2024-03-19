@@ -1,0 +1,636 @@
+﻿@model PaymentViewModel
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!-- Favicon icon -->
+	<link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+	<title>Freedash Template - The Ultimate Multipurpose admin template</title>
+	<!-- Custom CSS -->
+	<link href="~/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
+	@* 	<link href="~/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet"> *@
+	<link href="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+	<!-- Custom CSS -->
+	<link href="~/dist/css/style.min.css" rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<style>
+		/* Remove gutter between columns */
+		.row.no-gutters [class*='col-'] {
+			padding-right: 0;
+			padding-left: 0;
+		}
+
+		.card-wrapper {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+
+			.card-wrapper .card {
+				flex: 1;
+			}
+
+		.utangq-text {
+			color: black; /* or any other color you prefer */
+			font-size: 20px;
+		}
+
+	</style>
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Container fluid  -->
+	<!-- ============================================================== -->
+	<div class="container-fluid">
+		<!-- *************************************************************** -->
+		<!-- Start First Cards -->
+		<!-- *************************************************************** -->
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<h3 class="card-title">Payment History</h3>
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Bills Owed Summary</h4>
+									<div class="row no-gutters">
+										<div class="col-6">
+											<div class="card">
+												<div class="card-body text-center">
+													<div class="container col-3">
+														<div class="d-flex align-items-center">
+															<div class="col">
+																<div class="d-inline-flex align-items-center">
+																	<h2 class="text-dark mb-1 font-weight-medium">$@Model.AmountOwed.ToString("0.00")</h2>
+																	@if (Model.AmountOwed > 0)
+																	{
+																		var percentDifference = Model.AmountOwed / Model.AmountOwed * 100;
+																		<span class="badge @((percentDifference < 0 ? "bg-danger" : "bg-primary")) font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">
+																			@percentDifference.ToString("N2")%
+																		</span>
+																	}
+																</div>
+																<h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">
+																	Total Bills Owed
+																</h6>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-6">
+											<div class="card">
+												<div class="card-body text-center">
+													<div class="container col-3">
+														<div class="d-flex align-items-center">
+															<div class="col">
+																<div class="d-inline-flex align-items-center">
+																	<h2 class="text-dark mb-1 font-weight-medium">$@Model.AmountAwaiting.ToString("0.00")</h2>
+																	@if (Model.AmountOwed > 0)
+																	{
+																		var percentDifference = Model.AmountAwaiting / Model.AmountOwed * 100;
+																		<span class="badge @((percentDifference < 0 ? "bg-danger" : "bg-primary")) font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">
+																			@percentDifference.ToString("N2")%
+																		</span>
+																	}
+																</div>
+																<h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">
+																	Bills Awaiting
+																</h6>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row no-gutters">
+										<div class="col-sm-6 col-lg-4">
+											<div class="card border-end">
+												<div class="card-body">
+													<div class="d-flex align-items-center">
+														<div>
+															<div class="d-inline-flex align-items-center">
+																<h2 class="text-dark mb-1 font-weight-medium">$@Model.AmountPaid.ToString("0.00")</h2>
+																@if (Model.AmountOwed > 0)
+																{
+																	var percentDifference = Model.AmountPaid / Model.AmountOwed * 100;
+																	<span class="badge @((percentDifference < 0 ? "bg-danger" : "bg-primary")) font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">
+																		@percentDifference.ToString("N2")%
+																	</span>
+																}
+															</div>
+															<h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">
+																Bills Paid
+															</h6>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6 col-lg-4">
+											<div class="card border-end ">
+												<div class="card-body">
+													<div class="d-flex align-items-center">
+														<div>
+															<div class="d-inline-flex align-items-center">
+																<h2 class="text-dark mb-1 font-weight-medium">$@Model.AmountAccepted.ToString("0.00")</h2>
+																@if (Model.AmountOwed > 0)
+																{
+																	var percentDifference = Model.AmountAccepted / Model.AmountOwed * 100;
+																	<span class="badge @((percentDifference < 0 ? "bg-danger" : "bg-primary")) font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">
+																		@percentDifference.ToString("N2")%
+																	</span>
+																}
+															</div>
+															<h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">
+																Bills Accepted
+															</h6>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6 col-lg-4">
+											<div class="card border-end ">
+												<div class="card-body">
+													<div class="d-flex align-items-center">
+														<div>
+															<div class="d-inline-flex align-items-center">
+																<h2 class="text-dark mb-1 font-weight-medium">$@Model.AmountPending.ToString("0.00")</h2>
+																@if (Model.AmountOwed > 0)
+																{
+																	var percentDifference = Model.AmountPending / Model.AmountOwed * 100;
+																	<span class="badge @((percentDifference < 0 ? "bg-danger" : "bg-primary")) font-12 text-white font-weight-medium rounded-pill ms-2 d-lg-block d-md-none">
+																		@percentDifference.ToString("N2")%
+																	</span>
+																}
+															</div>
+															<h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate">
+																Bills Pending
+															</h6>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-8">
+											<h4 class="card-title">Bills Owed Details</h4>
+										</div>
+										<div class="col-md-4">
+											<div class="card border-primary">
+												<div class="card-body">
+													<div class="d-flex align-items-center justify-content-between">
+														<div>
+															<h6 class="text-muted font-weight-normal mb-0">Wallet Balance:</h6>
+														</div>
+														<div>
+															<h5 class="text-dark mb-1 font-weight-medium">$@Model.Wallet.WalletBalance.ToString("0.00")</h5>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<thead class="bg-primary text-white">
+												<tr>
+													<th>Num.</th>
+													<th>Sender</th>
+													<th>Date</th>
+													<th>Amount</th>
+													<th>Description</th>
+													<th>Status</th>
+													<th>Tax Status</th>
+													<th class="text-center">Action</th>
+												</tr>
+											</thead>
+											<tbody id="billsTableBody">
+												@if (Model.BillRecipients.Any())
+												{
+													int count = 1;
+													foreach (var bill in Model.BillRecipients.Where(b => b.BillRecipientStatus != "Rejected"))
+													{
+														<tr>
+															<td>@count</td>
+															<td class="senderUsername">@bill.Username</td>
+															<td class="sentDate">@bill.SentDate.ToShortDateString()</td>
+															<td class="billRecipientAmount">@string.Format("{0:0.00}", bill.BillRecipientAmount)</td>
+															<td class="billDescription">@bill.BillDescription</td>
+															<td class="billStatus">@bill.BillRecipientStatus</td>
+															<td class="taxStatus">@bill.BillRecipientTax</td>
+															<td>
+																<input type="hidden" class="billRecipientID" value="@bill.BillRecipientID" />
+																@if (bill.BillRecipientStatus == "Pending")
+																{
+																	<div style="margin-right: 5px;">
+																		<button type="button" class="btn btn-success rounded-pill accept-bill" data-bill-id="@bill.BillRecipientID">
+																			<i class="fas fa-check"></i> <!-- Font Awesome check icon -->
+																		</button>
+																	</div>
+																	<div>
+																		<button type="button" class="btn btn-danger rounded-pill reject-bill" data-bill-id="@bill.BillRecipientID">
+																			<i class="fas fa-times"></i> <!-- Font Awesome times icon -->
+																		</button>
+																	</div>
+																}
+																else if (bill.BillRecipientStatus == "Accepted")
+																{
+																	<button type="button" class="btn btn-primary btn-sm split-bill mr-2 pay-bill" id="makePaymentBtn" data-bill-id="@bill.BillRecipientID">Make Payment</button>
+																}
+																else if (bill.BillRecipientStatus == "Paid")
+																{
+																	<button type="button" class="btn btn-secondary btn-sm edit-bill mr-2" onclick="openViewPaymentModal(this)">View Payment</button>
+																}
+															</td>
+														</tr>
+														count++;
+													}
+												}
+												else
+												{
+													<tr>
+														<td colspan="6" class="text-center">No bill recipient yet. Start splitting bill with your friend(s).</td>
+													</tr>
+												}
+											</tbody>
+										</table>
+									</div>
+									<div class="col-12 mt-3 text-end">
+										@* <!-- Pagination -->
+										<nav aria-label="Page navigation">
+										<ul class="pagination justify-content-center">
+										<li class="page-item">
+										<a class="page-link" href="#" id="previousPage">Previous</a>
+										</li>
+										<li class="page-item">
+										<a class="page-link" href="#" id="nextPage">Next</a>
+										</li>
+										</ul>
+										</nav> *@
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<
+			<!-- *************************************************************** -->
+			<!-- End First Cards -->
+			<!-- *************************************************************** -->
+		</div>
+		<!-- ============================================================== -->
+		<!-- Modal View Payment -->
+		<div id="viewPaymentModal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-labelledby="primary-header-modalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header modal-colored-header bg-dark">
+						<h4 class="modal-title text-white" id="primary-header-modalLabel">
+							View Payment
+						</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-hidden="true"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<!-- Your form controls -->
+							<div class="form-group mb-3">
+								<label for="PaymentReceiptID">Payment Receipt ID :</label>
+								<input type="number" id="PaymentReceiptID" class="form-control" name="PaymentReceiptID" placeholder="Payment Receipt ID" readonly />
+							</div>
+							<div class="form-group mb-3">
+								<label for="BillRecipientID">Bill Recipient ID :</label>
+								<input type="number" id="BillRecipientID" class="form-control" name="BillRecipientID" placeholder="Bill Recipient ID" readonly />
+							</div>
+							<div class="form-group mb-3">
+								<label for="SentDate">Payment Date :</label>
+								<input type="date" id="SentDate" class="form-control" name="SentDate" placeholder="Sent Date" readonly />
+							</div>
+							<div class="form-group mb-3">
+								<label for="ConfirmationDate">Confirmation Date :</label>
+								<input type="date" id="ConfirmationDate" class="form-control" name="ConfirmationDate" placeholder="Confirmation Date" readonly />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- Create Payment Modal -->
+		<div id="createPaymentModal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-labelledby="primary-header-modalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header modal-colored-header bg-primary">
+						<h4 class="modal-title" id="primary-header-modalLabel">
+							Create Payment
+						</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-hidden="true"></button>
+					</div>
+					<div class="modal-body">
+						<p class="text-dark">
+							Are you sure you want to create a payment?
+						</p>
+						<form method="post" action="/Payment/MakePayment" id="makePaymentForm">
+							@* Hidden input to store the bill recipient ID *@
+							<input type="hidden" id="billRecipientID" name="billRecipientID"/>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light"
+								data-bs-dismiss="modal">
+							Close
+						</button>
+						<button type="button" class="btn btn-primary" data-bill-recipient-id="" id="confirmPaymentBtn">Make Payment</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- Success Alert Modal -->
+		<div id="success-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content modal-filled bg-success">
+					<div class="modal-body p-4">
+						<div class="text-center">
+							<i class="dripicons-checkmark h1"></i>
+							<h4 class="mt-2">Well Done!</h4>
+							<p class="mt-3">Action succeded!</p> <!-- Display success message from ViewBag -->
+							<button type="button" class="btn btn-light my-2"
+									data-bs-dismiss="modal">
+								Continue
+							</button>
+						</div>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- Danger Alert Modal -->
+		<div id="danger-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content modal-filled bg-danger">
+					<div class="modal-body p-4">
+						<div class="text-center">
+							<i class="dripicons-wrong h1"></i>
+							<h4 class="mt-2">Oh snap!</h4>
+							<p class="mt-3">Action failed! :(</p> <!-- Display success message from ViewBag -->
+							<button type="button" class="btn btn-light my-2"
+									data-bs-dismiss="modal">
+								Continue
+							</button>
+						</div>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- ============================================================== -->
+		<!-- End Container fluid  -->
+		<!-- ============================================================== -->
+		<!-- All Jquery -->
+		<!-- ============================================================== -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+		<script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<!-- apps -->
+		<!-- apps -->
+		<script src="~/dist/js/app-style-switcher.js"></script>
+		<script src="~/dist/js/feather.min.js"></script>
+		<script src="~/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+		<script src="~/dist/js/sidebarmenu.js"></script>
+		<!--Custom JavaScript -->
+		<script src="~/dist/js/custom.min.js"></script>
+		<!--This page JavaScript -->
+		<script src="~/assets/extra-libs/c3/d3.min.js"></script>
+		<script src="~/assets/extra-libs/c3/c3.min.js"></script>
+		<script src="~/assets/libs/chartist/dist/chartist.min.js"></script>
+		<script src="~/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+		<script src="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+		<script src="~/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
+		<script src="~/dist/js/pages/dashboards/dashboard1.min.js"></script>
+		@* Handle make payment modal *@
+@* 		<script>
+			function openMakePaymentModal(button) {
+				// Get the parent row of the clicked button
+				var row = button.closest('tr');
+
+				// Retrieve data from the row
+				var billRecipientID = row.querySelector('.billRecipientID').value;
+
+				// Populate modal fields with data
+				document.getElementById('billRecipientID').value = billRecipientID;
+
+				console.log('Opened modal ID:', document.getElementById('billRecipientID').value);
+
+				// Open the modal
+				$('#createPaymentModal').modal('show');
+			}
+		</script>
+		<script>
+			$(function () {
+				$('.pay-bill').click(function () {
+					// Get the request id from the data attribute
+					var requestId = $(this).data('bill-recipient-id');
+					// AJAX request to make payment
+					$.ajax({
+						url: '@Url.Action("MakePayment", "Payment")',
+						method: 'POST',
+						contentType: 'application/json',
+						data: { requestId: requestId },
+						success: function (response) {
+							// Handle success response
+							$('#createPaymentModal').modal('hide'); // Hide modal
+							// Display success message or perform other actions
+							$('#success-alert-modal').modal('show');
+
+							// Reload the page after the user clicks "Continue" on the modal
+							$('#success-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						},
+						error: function (xhr, status, error) {
+							// Handle error response
+							// Display error message or perform other actions
+							$('#danger-alert-modal').modal('show');
+							// Handle error response
+							$('#danger-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						}
+					});
+				});
+			});
+
+		</script> *@
+		@* Handle accepting/ rejecting friend request *@
+		<script>
+			$('.accept-bill').click(function () {
+				// Get the request id from the data attribute
+				var requestId = $(this).data('bill-id');
+
+				// Send a POST request to the controller action
+				$.ajax({
+					url: '@Url.Action("AcceptBillRecipient", "Payment")', // Replace ControllerName with the actual name of your controller
+					type: 'POST',
+					data: { requestId: requestId }, // Send the request id as data
+					success: function (response) {
+						// Handle success response
+						$('#success-alert-modal').modal('show');
+
+						// Reload the page after the user clicks "Continue" on the modal
+						$('#success-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					},
+					error: function (xhr, status, error) {
+						$('#danger-alert-modal').modal('show');
+						// Handle error response
+						$('#danger-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					}
+				});
+			});
+
+			$('.reject-bill').click(function () {
+				// Get the request id from the data attribute
+				var requestId = $(this).data('bill-id');
+
+				// Send a POST request to the controller action
+				$.ajax({
+					url: '@Url.Action("RejectBillRecipient", "Payment")', // Replace ControllerName with the actual name of your controller
+					type: 'POST',
+					data: { requestId: requestId }, // Send the request id as data
+					success: function (response) {
+						// Handle success response
+						$('#success-alert-modal').modal('show');
+
+						// Reload the page after the user clicks "Continue" on the modal
+						$('#success-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					},
+					error: function (xhr, status, error) {
+						$('#danger-alert-modal').modal('show');
+						// Handle error response
+						$('#danger-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					}
+				});
+			});
+			$('.pay-bill').click(function () {
+				// Get the request id from the data attribute
+				var requestId = $(this).data('bill-id');
+
+				// Send a POST request to the controller action
+				$.ajax({
+					url: '@Url.Action("MakePayment", "Payment")', // Replace ControllerName with the actual name of your controller
+					type: 'POST',
+					data: { requestId: requestId }, // Send the request id as data
+					success: function (response) {
+						// Handle success response
+						$('#success-alert-modal').modal('show');
+
+						// Reload the page after the user clicks "Continue" on the modal
+						$('#success-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					},
+					error: function (xhr, status, error) {
+						$('#danger-alert-modal').modal('show');
+						// Handle error response
+						$('#danger-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					}
+				});
+			});
+		</script>
+		<!-- JavaScript Function to Open View Payment Modal -->
+		<script>
+			function openViewPaymentModal(button) {
+				// Get the parent row of the clicked button
+				var row = $(button).closest('tr');
+				var billRecipientID = row.find('.billRecipientID').val();
+
+				// Retrieve payment data from the server via the injected BLL
+				$.ajax({
+					url: '@Url.Action("GetPayment", "Payment")', // Replace this with your actual endpoint URL
+					method: 'GET',
+					data: { billRecipientID: billRecipientID },
+					success: function (response) {
+						// Check if the response is not empty
+						if (response) {
+							// Populate modal fields with data from the response
+							$('#PaymentReceiptID').val(response.payment.paymentReceiptID);
+							$('#BillRecipientID').val(response.payment.billRecipientID);
+							$('#SentDate').val(response.payment.sentDate);
+							$('#ConfirmationDate').val(response.payment.confirmationDate);
+
+							console.log('Opened modal for payment with ID:', response.payment.PaymentReceiptID);
+
+							// Open the modal
+							$('#viewPaymentModal').modal('show');
+						} else {
+							console.error('No data returned from server');
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error('Error occurred while fetching payment data:', error);
+					}
+				});
+			}
+		</script>
+
+		@* Handle drop down list username *@
+		<script>
+			function getUserID(select) {
+				var selectedUserID = select.value;
+				document.getElementById("selectedUserID").value = selectedUserID;
+			}
+		</script>
+
+</body>
+
+</html>

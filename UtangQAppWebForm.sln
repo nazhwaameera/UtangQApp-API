@@ -5,11 +5,13 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UtangQAppWebForm", "UtangQAppWebForm\UtangQAppWebForm.vbproj", "{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtangQAppBO", "UtangQAppBO\UtangQAppBO.csproj", "{570ADDB0-38B6-4047-A575-2E08CBE6D221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtangQAppBO", "UtangQAppBO\UtangQAppBO.csproj", "{570ADDB0-38B6-4047-A575-2E08CBE6D221}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtangQAppDAL", "UtangQAppDAL\UtangQAppDAL.csproj", "{EB7A84AD-7D18-4E13-A90D-4C1B5290B7F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtangQAppDAL", "UtangQAppDAL\UtangQAppDAL.csproj", "{EB7A84AD-7D18-4E13-A90D-4C1B5290B7F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtangQAppBLL", "UtangQAppBLL\UtangQAppBLL.csproj", "{1EC74B43-74C6-459C-A303-2C87F91201AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtangQAppBLL", "UtangQAppBLL\UtangQAppBLL.csproj", "{1EC74B43-74C6-459C-A303-2C87F91201AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtangQApp_MVC", "UtangQApp_MVC\UtangQApp_MVC.csproj", "{BB3F015D-E961-4682-8DB1-01FE30DE0994}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1EC74B43-74C6-459C-A303-2C87F91201AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EC74B43-74C6-459C-A303-2C87F91201AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EC74B43-74C6-459C-A303-2C87F91201AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB3F015D-E961-4682-8DB1-01FE30DE0994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3F015D-E961-4682-8DB1-01FE30DE0994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3F015D-E961-4682-8DB1-01FE30DE0994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3F015D-E961-4682-8DB1-01FE30DE0994}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

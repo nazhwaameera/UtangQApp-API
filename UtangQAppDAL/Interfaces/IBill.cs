@@ -12,7 +12,13 @@ namespace UtangQAppDAL.Interfaces
         decimal CalculateTotalUnassignedBillAmount(int UserId);
         decimal GetTotalBillAmountCreatedPendingProcedure(int UserId);
         decimal GetTotalBillAmountCreatedPaidProcedure(int UserId);
-        decimal GetTotalPendingAmountOwedProcedure(int RecipientUserID);
+        decimal GetTotalBillAmountCreatedAcceptedProcedure(int UserId);
+        decimal GetTotalBillAmountCreatedRejectedProcedure(int UserId);
+        decimal GetTotalBillAmountCreatedAwaitingProcedure(int UserId);
+		decimal GetTotalPendingAmountOwedProcedure(int RecipientUserID);
         decimal GetTotalBillAmountPaidProcedure(int RecipientUserID);
-    }
+        decimal GetTotalBillAmountAcceptedProcedure(int RecipientUserID);
+        decimal GetTotalBillAmountAwaitingProcedure(int RecipientUserID);
+
+	}
 }

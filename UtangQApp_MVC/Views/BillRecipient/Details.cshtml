@@ -1,0 +1,640 @@
+﻿@model BillRecipientViewModel
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!-- Favicon icon -->
+	<link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+	<title>Freedash Template - The Ultimate Multipurpose admin template</title>
+	<!-- Custom CSS -->
+	<link href="~/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
+	@* 	<link href="~/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet"> *@
+	<link href="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+	<!-- Custom CSS -->
+	<link href="~/dist/css/style.min.css" rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<style>
+		/* Remove gutter between columns */
+		.row.no-gutters [class*='col-'] {
+			padding-right: 0;
+			padding-left: 0;
+		}
+
+		.card-wrapper {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+
+			.card-wrapper .card {
+				flex: 1;
+			}
+
+		.utangq-text {
+			color: black; /* or any other color you prefer */
+			font-size: 20px;
+		}
+
+	</style>
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Container fluid  -->
+	<!-- ============================================================== -->
+	<div class="container-fluid">
+		<!-- *************************************************************** -->
+		<!-- Start First Cards -->
+		<!-- *************************************************************** -->
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<h3 class="card-title">Bill Recipient(s)</h3>
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="row align-items-center mb-3">
+										<div class="col-lg-5">
+											<h4 class="card-title">Bill Recipient Details</h4>
+										</div>
+										<div class="col-lg-7 text-end">
+											<!-- Wallet Balance and Add Bill button -->
+											<div class="row align-items-center">
+												<!-- Wallet Balance -->
+												<div class="col-6">
+													<h6 class="font-weight-normal mb-0 text-dark">Remaining Amount: </h6>
+												</div>
+												<div class="col-2">
+													<h6 class="font-weight-normal mb-0 text-dark">$@Model.TotalBillRecipientAmountByBillID.ToString("0.00")</h6>
+												</div>
+												<!-- Add Bill button -->
+												<div class="col-4">
+													<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createBillRecipientModal"
+													@(Model.TotalBillRecipientAmountByBillID == 0 ? "disabled" : "")>
+														Create Bill
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<thead class="bg-primary text-white">
+												<tr>
+													<th>Num.</th>
+													<th>Receiver</th>
+													<th>Date</th>
+													<th>Amount</th>
+													<th>Status</th>
+													<th>Tax Status</th>
+													<th class="text-center">Action</th>
+												</tr>
+											</thead>
+											<tbody id="billsTableBody">
+												@if (Model.BillRecipients.Any())
+												{
+													int count = 1;
+													foreach (var bill in Model.BillRecipients)
+													{
+														<tr>
+															<td>@count</td>
+															<td class="receiverUsername">@GetUsernameById(@bill.RecipientUserID)</td>
+															<td class="sentDate">@bill.SentDate.ToShortDateString()</td>
+															<td class="billRecipientAmount">@string.Format("{0:0.00}", bill.BillRecipientAmount)</td>
+															<td class="billStatus">
+																@if (bill.BillRecipientStatusID == 1) // Pending
+																{
+																	<span class="badge bg-secondary text-white">@GetBillStatusById(bill.BillRecipientStatusID)</span>
+																}
+																else if (bill.BillRecipientStatusID == 2) // Paid
+																{
+																	<span class="badge bg-success">@GetBillStatusById(bill.BillRecipientStatusID)</span>
+																}
+																else if (bill.BillRecipientStatusID == 3) // Cancelled
+																{
+																	<span class="badge bg-warning">@GetBillStatusById(bill.BillRecipientStatusID)</span>
+																}
+																else if (bill.BillRecipientStatusID == 4) // Accepted
+																{
+																	<span class="badge bg-primary">@GetBillStatusById(bill.BillRecipientStatusID)</span>
+																}
+																else if (bill.BillRecipientStatusID == 5) // Rejected
+																{
+																	<span class="badge bg-danger">@GetBillStatusById(bill.BillRecipientStatusID)</span>
+																}
+																else if (bill.BillRecipientStatusID == 6) // Awaiting
+																{
+																	<span class="badge bg-info text-dark">@GetBillStatusById(bill.BillRecipientStatusID)</span>
+																}
+															</td>
+
+															<td class="taxStatus">@GetTaxStatusById(@bill.BillRecipientTaxStatusID)</td>
+															<td class="text-center">
+																<input type="hidden" class="billRecipientID" value="@bill.BillRecipientID" />
+																@if (bill.BillRecipientStatusID == 1)
+																{
+																	<button type="button" class="btn btn-warning btn-sm accept-bill mr-2">Edit</button>
+																	<button type="button" class="btn btn-danger btn-sm reject-bill mr-2">Delete</button>
+																}
+																else if (bill.BillRecipientStatusID == 2)
+																{
+																	<button type="button" class="btn btn-secondary btn-sm edit-bill mr-2" onclick="openViewPaymentModal(this)">View Payment</button>
+																}
+																else if (bill.BillRecipientStatusID == 6)
+																{
+																	<button type="button" class="btn btn-primary btn-sm edit-bill mr-2 confirm-payment" data-bill-id="@bill.BillRecipientID">Confirm Payment</button>
+																}
+															</td>
+														</tr>
+														count++;
+													}
+												}
+												else
+												{
+													<tr>
+														<td colspan="7" class="text-center">No bill recipient created yet. Click the "Add Bill Recipient" button to split a bill.</td>
+													</tr>
+												}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- *************************************************************** -->
+			<!-- End First Cards -->
+			<!-- *************************************************************** -->
+		</div>
+		@functions {
+			// Function to get username by user ID
+			string GetUsernameById(int userId)
+			{
+				var user = Model.Users.FirstOrDefault(u => u.UserID == userId);
+				return user != null ? user.Username : "";
+			}
+		}
+		@functions {
+			// Function to get username by user ID
+			string GetBillStatusById(int statusId)
+			{
+				var billStatus = Model.BillStatuses.FirstOrDefault(bs => bs.BillStatusID == statusId);
+				return billStatus != null ? billStatus.BillStatusDescription : "";
+			}
+		}
+		@functions {
+			// Function to get username by user ID
+			string GetTaxStatusById(int taxStatusId)
+			{
+				var taxStatus = Model.TaxStatuses.FirstOrDefault(ts => ts.TaxStatusID == taxStatusId);
+				return taxStatus != null ? taxStatus.TaxStatusDescription : "";
+			}
+		}
+		<!-- ============================================================== -->
+		<!-- Modal View Payment -->
+		<div id="viewPaymentModal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-labelledby="primary-header-modalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header modal-colored-header bg-dark">
+						<h4 class="modal-title text-white" id="primary-header-modalLabel">
+							View Payment
+						</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-hidden="true"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<!-- Your form controls -->
+							<div class="form-group mb-3">
+								<label for="PaymentReceiptID">Payment Receipt ID :</label>
+								<input type="number" id="PaymentReceiptID" class="form-control" name="PaymentReceiptID" placeholder="Payment Receipt ID" readonly />
+							</div>
+							<div class="form-group mb-3">
+								<label for="BillRecipientID">Bill Recipient ID :</label>
+								<input type="number" id="BillRecipientID" class="form-control" name="BillRecipientID" placeholder="Bill Recipient ID" readonly />
+							</div>
+							<div class="form-group mb-3">
+								<label for="SentDate">Payment Date :</label>
+								<input type="date" id="SentDate" class="form-control" name="SentDate" placeholder="Sent Date" readonly />
+							</div>
+							<div class="form-group mb-3">
+								<label for="ConfirmationDate">Confirmation Date :</label>
+								<input type="date" id="ConfirmationDate" class="form-control" name="ConfirmationDate" placeholder="Confirmation Date" readonly />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- Modal Create Bill Recipient -->
+		<div id="createBillRecipientModal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-labelledby="primary-header-modalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header modal-colored-header bg-primary">
+						<h4 class="modal-title" id="primary-header-modalLabel">
+							Create a New Bill Recipient
+						</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-hidden="true"></button>
+					</div>
+					<div class="modal-body">
+						<form method="post" action="/BillRecipient/CreateBillRecipient" id="createBillRecipientForm">
+							<!-- Your form controls -->
+							<div class="form-group mb-3">
+								<label class="mr-sm-2 mb-2" for="inlineFormCustomSelect">Username</label>
+								<select class="form-select mr-sm-2" id="inlineFormCustomSelect" name="RecipientUserID" onchange="getUserID(this)">
+									<option selected="">Choose a username</option>
+									@foreach (var user in Model.Friends)
+									{
+										<option value="@user.UserID">@user.Username</option>
+									}
+								</select>
+								<input type="hidden" id="selectedUserID" name="selectedUserID" />
+								<input type="hidden" id="BillID" name="BillID" value="@ViewData["BillID"]" />
+							</div>
+
+							<div class="form-group mb-3">
+								<label for="TotalUsers">Total Users :</label>
+								<input type="number" id="TotalUsers" class="form-control" name="TotalUsers" placeholder="Enter total users" />
+							</div>
+							<div class="form-group mb-3">
+								<div class="form-check">
+									<input type="checkbox" name="splitEvenly" id="IsSplitEvenly" name="IsSplitEvenly" class="form-check-input" />
+									<label class="form-check-label" id="IsSplitEvenly" name="IsSplitEvenly" for="IsSplitEvenly">Split Evenly</label>
+								</div>
+							</div>
+							<div class="form-group mb-3">
+								<label class="mr-sm-2 mb-2" for="TaxStatusDescription">Tax Status</label>
+								<select class="form-select mr-sm-2" id="TaxStatusDescription" name="TaxStatusDescription">
+									<option selected="">Choose a tax description</option>
+									@foreach (var tax in Model.TaxStatuses)
+									{
+										<option value="@tax.TaxStatusDescription">@tax.TaxStatusDescription</option>
+									}
+								</select>
+							</div>
+							<div class="form-group mb-3">
+								<label for="TaxCharged">Tax Charged:</label>
+								<input type="number" id="TaxCharged" name="TaxCharged" class="form-control" placeholder="Enter tax charged" />
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" id="btnCreateBillRecipient" class="btn btn-primary">Create</button>
+					</div>
+
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- Modal Bill Delete -->
+		<div id="deleteBillModal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-labelledby="danger-header-modalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header modal-colored-header bg-danger">
+						<h4 class="modal-title" id="danger-header-modalLabel">Delete Modal</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-hidden="true"></button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to delete this bill?</p>
+						<form method="post" action="/Home/DeleteBill" id="deleteBillForm">
+							<input type="hidden" id="deleteBillID" name="BillID" />
+						</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light"
+								data-bs-dismiss="modal">
+							Close
+						</button>
+						<button type="button" id="btnDeleteBill" class="btn btn-danger">Delete Bill</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- Success Alert Modal -->
+		<div id="success-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content modal-filled bg-success">
+					<div class="modal-body p-4">
+						<div class="text-center">
+							<i class="dripicons-checkmark h1"></i>
+							<h4 class="mt-2">Well Done!</h4>
+							<p class="mt-3">Action succeded!</p> <!-- Display success message from ViewBag -->
+							<button type="button" class="btn btn-light my-2"
+									data-bs-dismiss="modal">
+								Continue
+							</button>
+						</div>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- Danger Alert Modal -->
+		<div id="danger-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+			 aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content modal-filled bg-danger">
+					<div class="modal-body p-4">
+						<div class="text-center">
+							<i class="dripicons-wrong h1"></i>
+							<h4 class="mt-2">Oh snap!</h4>
+							<p class="mt-3">Action failed! :(</p> <!-- Display success message from ViewBag -->
+							<button type="button" class="btn btn-light my-2"
+									data-bs-dismiss="modal">
+								Continue
+							</button>
+						</div>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<!-- ============================================================== -->
+		<!-- End Container fluid  -->
+		<!-- ============================================================== -->
+		<!-- All Jquery -->
+		<!-- ============================================================== -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+		<script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<!-- apps -->
+		<!-- apps -->
+		<script src="~/dist/js/app-style-switcher.js"></script>
+		<script src="~/dist/js/feather.min.js"></script>
+		<script src="~/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+		<script src="~/dist/js/sidebarmenu.js"></script>
+		<!--Custom JavaScript -->
+		<script src="~/dist/js/custom.min.js"></script>
+		<!--This page JavaScript -->
+		<script src="~/assets/extra-libs/c3/d3.min.js"></script>
+		<script src="~/assets/extra-libs/c3/c3.min.js"></script>
+		<script src="~/assets/libs/chartist/dist/chartist.min.js"></script>
+		<script src="~/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+		<script src="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+		<script src="~/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
+		<script src="~/dist/js/pages/dashboards/dashboard1.min.js"></script>
+		@* Handle drop down list username *@
+		<script>
+			function getUserID(select) {
+				var selectedUserID = select.value;
+				document.getElementById("selectedUserID").value = selectedUserID;
+			}
+		</script>
+		<!-- JavaScript Function to Open View Payment Modal -->
+		<script>
+
+			function openViewPaymentModal(button) {
+				// Get the parent row of the clicked button
+				var row = $(button).closest('tr');
+				var billRecipientID = row.find('.billRecipientID').val();
+
+				// Retrieve payment data from the server via the injected BLL
+				$.ajax({
+					url: '@Url.Action("GetPayment", "Payment")', // Replace this with your actual endpoint URL
+					method: 'GET',
+					data: { billRecipientID: billRecipientID },
+					success: function (response) {
+						// Check if the response is not empty
+						if (response) {
+							// Populate modal fields with data from the response
+							$('#PaymentReceiptID').val(response.payment.paymentReceiptID);
+							$('#BillRecipientID').val(response.payment.billRecipientID);
+							$('#SentDate').val(response.payment.sentDate);
+							$('#ConfirmationDate').val(response.payment.confirmationDate);
+
+							console.log('Opened modal for payment with ID:', response.payment.PaymentReceiptID);
+
+							// Open the modal
+							$('#viewPaymentModal').modal('show');
+						} else {
+							console.error('No data returned from server');
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error('Error occurred while fetching payment data:', error);
+					}
+				});
+			}
+		</script>
+		@* Handle create bill recipient *@
+		<script>
+			$(function () {
+				$('#btnCreateBillRecipient').click(function () {
+					var billID = $('#BillID').val();
+					var recipientUserID = $('#selectedUserID').val();
+					var totalUsers = $('#TotalUsers').val();
+					var isSplitEvenly = $('#IsSplitEvenly').prop('checked');
+					var taxStatusDescription = $('#TaxStatusDescription').val();
+					var taxCharged = $('#TaxCharged').val(); // Replace with the actual value from your modal
+
+					$.ajax({
+						url: '@Url.Action("CreateBillRecipient", "BillRecipient")',
+						method: 'POST',
+						contentType: 'application/json',
+						data: JSON.stringify({
+							BillID: billID,
+							RecipientUserID: recipientUserID,
+							TotalUsers: totalUsers,
+							IsSplitEvenly: isSplitEvenly,
+							TaxStatusDescription: taxStatusDescription,
+							TaxCharged: taxCharged
+						}),
+						success: function (response) {
+							// Handle success response if needed
+							console.log('Bill recipient created successfully:', response);
+							$('#createBillRecipientModal').modal('hide');
+							$('#success-alert-modal').modal('show');
+
+							// Reload the page after the user clicks "Continue" on the modal
+							$('#success-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						},
+						error: function (xhr, status, error) {
+							// Handle error response if needed
+							console.error('Error creating bill recipient:', error);
+							$('#danger-alert-modal').modal('show');
+							// Handle error response
+							$('#danger-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						}
+					});
+				});
+			});
+
+		</script>
+		<script>
+			$('.confirm-payment').click(function () {
+				// Get the request id from the data attribute
+				var requestId = $(this).data('bill-id');
+
+				// Send a POST request to the controller action
+				$.ajax({
+					url: '@Url.Action("ConfirmPayment", "BillRecipient")', // Replace ControllerName with the actual name of your controller
+					type: 'POST',
+					data: { requestId: requestId }, // Send the request id as data
+					success: function (response) {
+						// Handle success response
+						$('#success-alert-modal').modal('show');
+
+						// Reload the page after the user clicks "Continue" on the modal
+						$('#success-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					},
+					error: function (xhr, status, error) {
+						$('#danger-alert-modal').modal('show');
+						// Handle error response
+						$('#danger-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					}
+				});
+			});
+		</script>
+
+		<!-- JavaScript Function to Open Edit Modal and Retrieve Data -->
+		<script>
+			function openEditBillModal(button) {
+				// Get the parent row of the clicked button
+				var row = button.closest('tr');
+
+				// Retrieve data from the row
+				var billID = row.querySelector('.billID').value;
+				var billDate = row.querySelector('.billDate').innerText;
+				var billAmount = row.querySelector('.billAmount').innerText;
+				var ownerContribution = row.querySelector('.ownerContribution').innerText;
+				var billDescription = row.querySelector('.billDescription').innerText;
+
+				// Populate modal fields with data
+				document.getElementById('editBillID').value = billID;
+				// Assuming billDate is in the format "YYYY-MM-DD"
+				var date = new Date(billDate);
+				var formattedDate = date.toISOString().split('T')[0];
+				// Set the formatted date to the editBillDate input field
+				document.getElementById('editBillDate').value = formattedDate;
+				document.getElementById('editBillAmount').value = billAmount;
+				document.getElementById('editOwnerContribution').value = ownerContribution;
+				document.getElementById('editBillDescription').value = billDescription;
+
+				console.log('Opened modal ID:', billID);
+
+				// Open the modal
+				$('#editBillModal').modal('show');
+			}
+		</script>
+		@* Handle edit bill *@
+		<script>
+			// JavaScript to handle form submission via AJAX
+			$(function () {
+				$('#btnEditBill').click(function () {
+					$.ajax({
+						url: '@Url.Action("EditBill", "Home")',
+						type: 'POST',
+						data: $('#editBillForm').serialize(),
+						success: function (response) {
+							// Handle success response
+							$('#editBillModal').modal('hide');
+							$('#success-alert-modal').modal('show');
+
+							// Reload the page after the user clicks "Continue" on the modal
+							$('#success-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						},
+						error: function (xhr, status, error) {
+							$('#danger-alert-modal').modal('show');
+							// Handle error response
+							$('#danger-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						}
+					});
+				});
+			});
+		</script>
+		<!-- JavaScript Function to Open Edit Modal and Retrieve Data -->
+		<script>
+			function openDeleteBillModal(button) {
+				// Get the parent row of the clicked button
+				var row = button.closest('tr');
+
+				// Retrieve data from the row
+				var billID = row.querySelector('.billID').value;
+
+				// Populate modal fields with data
+				document.getElementById('deleteBillID').value = billID;
+				console.log('Opened modal ID:', billID);
+
+				// Open the modal
+				$('#deleteBillModal').modal('show');
+			}
+		</script>
+		@* Handle delete bill *@
+		<script>
+			// JavaScript to handle form submission via AJAX
+			$(function () {
+				$('#btnDeleteBill').click(function () {
+					$.ajax({
+						url: '@Url.Action("DeleteBill", "Home")',
+						type: 'POST',
+						data: $('#deleteBillForm').serialize(),
+						success: function (response) {
+							// Handle success response
+							$('#deleteBillModal').modal('hide');
+							$('#success-alert-modal').modal('show');
+
+							// Reload the page after the user clicks "Continue" on the modal
+							$('#success-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						},
+						error: function (xhr, status, error) {
+							$('#danger-alert-modal').modal('show');
+							// Handle error response
+							$('#danger-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						}
+					});
+				});
+			});
+		</script>
+
+</body>
+
+</html>

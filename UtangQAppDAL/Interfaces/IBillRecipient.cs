@@ -14,6 +14,11 @@ namespace UtangQAppDAL.Interfaces
         void Delete(int id);
         void UpdateBillRecipientPaymentStatus(int BillRecipientID, int NewStatusID);
         IEnumerable<BillRecipient> ReadBillRecipientByRecipientUserID(int RecipientUserID);
+        IEnumerable<BillRecipientWithDesc> ReadBillRecipientByRecipientUserIDWithDescription(int RecipientUserID);
         IEnumerable<BillRecipient> GetBillRecipientsByBillID(int BillID);
-    }
+        void HandleIncomingBillRecipient(int BillRecipientID, int NewStatusID);
+        decimal TotalBillRecipientAmountByBillID(int BillID);
+
+
+	}
 }

@@ -5,7 +5,7 @@ using UtangQAppBLL.DTOs.User;
 
 namespace UtangQAppBLL.Interfaces.User
 {
-    internal interface IWalletBLL : ICrudBLL<WalletDTO>
+    public interface IWalletBLL : ICrudBLL<WalletDTO>
     {
         void Create(WalletCreateDTO entity);
         WalletDTO ReadWalletbyUserID(int UserID);

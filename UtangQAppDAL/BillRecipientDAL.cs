@@ -14,7 +14,8 @@ namespace UtangQAppDAL
     {
         private string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
+            return Helper.GetConnectionString();
+            //return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
         }
 
         public void Create(BillRecipientCreate entity)
@@ -105,17 +106,10 @@ namespace UtangQAppDAL
         {
             using (SqlConnection conn = new SqlConnection(GetConnectionString()))
             {
-                try
-                {
-                    var strSql = "Transactions.GetBillRecipientsByBillID";
-                    var param = new { BillID = BillID };
-                    var results = conn.Query<BillRecipient>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
-                    return results;
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                var strSql = "Transactions.GetBillRecipientsByBillID";
+                var param = new { BillID = BillID };
+                var results = conn.Query<BillRecipient>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+                return results;
             }
         }
 
@@ -167,7 +161,7 @@ namespace UtangQAppDAL
                 try
                 {
                     int result = conn.Execute(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
-                    if (result != 2)
+                    if (result != 4)
                     {
                         throw new ArgumentException("Update bill recipient payment status data failed..");
                     }
@@ -200,5 +194,64 @@ namespace UtangQAppDAL
                 }
             }
         }
-    }
+
+		public IEnumerable<BillRecipientWithDesc> ReadBillRecipientByRecipientUserIDWithDescription(int RecipientUserID)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+				try
+                {
+					var strSql = "Transactions.ReadBillRecipientByRecipientUserIDWithDescription";
+					var param = new { RecipientUserID = RecipientUserID };
+					var results = conn.Query<BillRecipientWithDesc>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+					return results;
+				}
+				catch (Exception ex)
+                {
+					throw ex;
+				}
+			}
+		}
+
+		public void HandleIncomingBillRecipient(int BillRecipientID, int NewStatusID)
+		{
+            using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+            {
+				var strSql = "Transactions.HandleIncomingBillRecipient";
+				var param = new
+                {
+					BillRecipientID = BillRecipientID,
+					NewStatusID = NewStatusID,
+				};
+
+				try
+                {
+					int result = conn.Execute(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+					if (result != 1)
+                    {
+						throw new ArgumentException("Handle incoming bill recipient data failed..");
+					}
+				}
+				catch (SqlException sqlEx)
+                {
+					throw new ArgumentException($"{sqlEx.InnerException.Message} - {sqlEx.Number}");
+				}
+				catch (Exception ex)
+                {
+					throw new ArgumentException(ex.Message);
+				}
+			}
+		}
+
+		public decimal TotalBillRecipientAmountByBillID(int BillID)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Transactions.TotalBillRecipientAmountByBillID";
+				var param = new { BillID = BillID };
+				var result = conn.ExecuteScalar<decimal>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+	}
 }

@@ -12,7 +12,8 @@ namespace UtangQAppDAL
     {
         private string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
+            return Helper.GetConnectionString();
+            //return ConfigurationManager.ConnectionStrings["MyDbConnectionString"].ConnectionString;
         }
         public void Create(User entity)
         {
@@ -157,5 +158,27 @@ namespace UtangQAppDAL
                 return result;
             }
         }
-    }
+
+		public IEnumerable<User> GetFriends(int FriendshipID)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Users.GetFriends";
+                var param = new { FriendshipID = FriendshipID };
+				var result = conn.Query<User>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+
+		public IEnumerable<User> GetNonFriends(int FriendshipID)
+		{
+			using (SqlConnection conn = new SqlConnection(GetConnectionString()))
+			{
+				var strSql = "Users.GetNonFriends";
+				var param = new { FriendshipID = FriendshipID };
+				var result = conn.Query<User>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+				return result;
+			}
+		}
+	}
 }

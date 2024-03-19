@@ -1,0 +1,521 @@
+﻿@model FriendshipViewModel
+@inject UtangQAppBLL.UserBLL UserBLL
+@inject UtangQAppBLL.FriendshipStatusBLL FriendshipStatusBLL
+
+@{
+	ViewData["Title"] = "Friendship Page";
+}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- Tell the browser to be responsive to screen width -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!-- Favicon icon -->
+	<link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+	<title>Freedash Template - The Ultimate Multipurpose admin template</title>
+	<!-- Custom CSS -->
+	<link href="~/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
+	@* 	<link href="~/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet"> *@
+	<link href="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+	<!-- Custom CSS -->
+	<link href="~/dist/css/style.min.css" rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
+	<div class="preloader">
+		<div class="lds-ripple">
+			<div class="lds-pos"></div>
+			<div class="lds-pos"></div>
+		</div>
+	</div>
+	<!-- ============================================================== -->
+	<!-- Container fluid  -->
+	<!-- ============================================================== -->
+	<div class="container-fluid">
+		<!-- *************************************************************** -->
+		<!-- Start First Cards -->
+		<!-- *************************************************************** -->
+		@if (Model.Friendship == null)
+		{
+			<div class="alert alert-warning text-center mb-4" role="alert">
+				Create your friendship list by clicking this hyperlink <a href="#" class="alert-link" onclick="openCreateFriendshipModal()">here</a>.
+			</div>
+		}
+		else
+		{
+			<div class="row mb-0">
+				<div class="col-lg-6 col-md-6">
+					<div class="row mb-0">
+						<div class="card-wrapper">
+							<div class="card">
+								<div class="card-body d-flex flex-column">
+									<h3 class="card-title">Friendship Request Form</h3>
+									<div class="col-md-12 col-lg-12">
+										<div class="card">
+											<div class="card-body">
+												<h4 class="card-title mb-3">Select Friend</h4>
+												<form method="post" action="/Friendship/SendRequest" id="sendRequestForm">
+													<div class="form-group mb-4">
+														<label class="mr-sm-2 mb-2" for="inlineFormCustomSelect">Username</label>
+														<select class="form-select mr-sm-2" id="inlineFormCustomSelect" onchange="getUserID(this)">
+															<option selected="">Choose a username</option>
+															@foreach (var user in Model.NotFriends)
+															{
+																<option value="@user.UserID">@user.Username</option>
+															}
+														</select>
+														<input type="hidden" id="selectedUserID" name="selectedUserID" />
+														<input type="hidden" id="friendshipID" name="friendshipID" value=@Model.Friendship.FriendshipID />
+													</div>
+													<div class="text-center">
+														<button type="button" class="btn btn-primary" id="btnSendRequest">Send Friend Request</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6 col-md-6">
+					<div class="card-wrapper">
+						<div class="card">
+							<div class="card-body d-flex flex-column">
+								<h3 class="card-title">Friend Request Sent</h3>
+								<div class="col-12">
+									<div class="card">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-hover">
+													<thead class="bg-info text-white">
+														<tr>
+															<th>Num.</th>
+															<th>Username</th>
+															<th>Status</th>
+														</tr>
+													</thead>
+													<tbody id="friendshipListTableBody" class="border border-info">
+														@if (Model.FriendshipList.Any())
+														{
+															int count = 1;
+															foreach (var list in Model.FriendshipList)
+															{
+																var user = UserBLL.Get(list.ReceiverUserID ?? 0);
+																var status = FriendshipStatusBLL.Get(list.FriendshipStatusID ?? 0);
+																string badgeClass = "";
+																if (status.FriendshipStatusID == 1) // Pending
+																{
+																	badgeClass = "bg-secondary"; // Grey background
+																}
+																else if (status.FriendshipStatusID == 2) // Accepted
+																{
+																	badgeClass = "bg-success"; // Green background
+																}
+																else if (status.FriendshipStatusID == 3) // Rejected
+																{
+																	badgeClass = "bg-danger"; // Red background
+																}
+																<tr>
+																	<td>@count</td>
+																	<td>@user.Username</td>
+																	<td>
+																		<span class="badge rounded-pill @badgeClass">@status.FriendshipStatusDescription</span>
+																	</td>
+
+																</tr>
+																count++;
+															}
+														}
+														else
+														{
+															<tr class="text-center">
+																<td colspan="3" class="text-center">No friend request yet. Start sending a friend request to be able to split your bill.</td>
+															</tr>
+														}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<div class="card-wrapper">
+						<div class="card">
+							<div class="card-body d-flex flex-column">
+								<h3 class="card-title">Incoming Friend Request</h3>
+								<div class="col-12">
+									<div class="card">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-hover">
+													<thead class="bg-info text-white">
+														<tr>
+															<th>Num.</th>
+															<th>Username</th>
+															<th>Full Name</th>
+															<th>Email</th>
+															<th>Phone</th>
+															<th class="text-center">Action</th>
+														</tr>
+													</thead>
+													<tbody id="friendshipListTableBody" class="border border-info">
+														@if (Model.IncomingRequest.Any())
+														{
+															int count = 1;
+															foreach (var request in Model.IncomingRequest)
+															{
+																var user = UserBLL.Get(request.SenderUserID ?? 0);
+																<tr>
+																	<td>@count</td>
+																	<td>@user.Username</td>
+																	<td>@user.UserFullName</td>
+																	<td>@user.UserEmail</td>
+																	<td>@user.UserPhoneNumber</td>
+																	<td>
+																		<div class="btn-group" role="group" aria-label="Friend Request Actions">
+																			<div style="margin-right: 5px;">
+																				<button type="button" class="btn btn-success rounded-pill accept-request" data-request-id="@request.FriendshipListID">
+																					<i class="fas fa-check"></i> <!-- Font Awesome check icon -->
+																				</button>
+																			</div>
+																			<div>
+																				<button type="button" class="btn btn-danger rounded-pill reject-request" data-request-id="@request.FriendshipListID">
+																					<i class="fas fa-times"></i> <!-- Font Awesome times icon -->
+																				</button>
+																			</div>
+																		</div>
+																	</td>
+																	<!-- Hidden fields -->
+																	<input type="hidden" name="FriendshipListID" value="@request.FriendshipListID" />
+																	<input type="hidden" name="SenderUserID" value="@request.SenderUserID" />
+																</tr>
+																count++;
+															}
+														}
+														else
+														{
+															<tr class="text-center">
+																<td colspan="6" class="text-center">There is no friend request at the moment.</td>
+															</tr>
+														}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<div class="card-wrapper">
+						<div class="card">
+							<div class="card-body d-flex flex-column">
+								<h3 class="card-title">Friendship List</h3>
+								<div class="col-12">
+									<div class="card">
+										<div class="card-body">
+											<div class="table-responsive">
+												<table class="table table-hover">
+													<thead class="bg-info text-white">
+														<tr>
+															<th>Num.</th>
+															<th>Username</th>
+															<th>Full Name</th>
+															<th>Email</th>
+															<th>Phone Number</th>
+														</tr>
+													</thead>
+													<tbody id="friendshipListTableBody" class="border border-info">
+														@if (Model.Friends.Any())
+														{
+															int count = 1;
+															foreach (var friend in Model.Friends)
+															{
+																<tr>
+																	<td>@count</td>
+																	<td>@friend.Username</td>
+																	<td>@friend.UserFullName</td>
+																	<td>@friend.UserEmail</td>
+																	<td>@friend.UserPhoneNumber</td>
+																</tr>
+																count++;
+															}
+														}
+														else
+														{
+															<tr class="text-center">
+																<td colspan="5" class="text-center">No friend yet. Start sending a friend request or accepting a friend request to be able to split your bill.</td>
+															</tr>
+														}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+
+	<!-- ============================================================== -->
+	<!-- Create Friendship Modal -->
+	<div id="createFriendshipModal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="createFriendshipModalLabel">Create Friendship</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>By creating a friendship, you agree to abide by the terms and conditions set forth by the platform.</p>
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="agreeCheckbox">
+						<label class="form-check-label" for="agreeCheckbox">
+							I agree to the <a href="#">Terms and Conditions</a>.
+						</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="btnCreateFriendship">Create Friendship</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!-- Success Alert Modal -->
+	<div id="success-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content modal-filled bg-success">
+				<div class="modal-body p-4">
+					<div class="text-center">
+						<i class="dripicons-checkmark h1"></i>
+						<h4 class="mt-2">Well Done!</h4>
+						<p class="mt-3">Action succeded!</p> <!-- Display success message from ViewBag -->
+						<button type="button" class="btn btn-light my-2"
+								data-bs-dismiss="modal">
+							Continue
+						</button>
+					</div>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!-- Danger Alert Modal -->
+	<div id="danger-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-hidden="true">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content modal-filled bg-danger">
+				<div class="modal-body p-4">
+					<div class="text-center">
+						<i class="dripicons-wrong h1"></i>
+						<h4 class="mt-2">Oh snap!</h4>
+						<p class="mt-3">Action failed! :(</p> <!-- Display success message from ViewBag -->
+						<button type="button" class="btn btn-light my-2"
+								data-bs-dismiss="modal">
+							Continue
+						</button>
+					</div>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	<!-- ============================================================== -->
+	<!-- End Container fluid  -->
+	<!-- ============================================================== -->
+	<!-- All Jquery -->
+	<!-- ============================================================== -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+	<script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- apps -->
+	<!-- apps -->
+	<script src="~/dist/js/app-style-switcher.js"></script>
+	<script src="~/dist/js/feather.min.js"></script>
+	<script src="~/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+	<script src="~/dist/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
+	<script src="~/dist/js/custom.min.js"></script>
+	<!--This page JavaScript -->
+	<script src="~/assets/extra-libs/c3/d3.min.js"></script>
+	<script src="~/assets/extra-libs/c3/c3.min.js"></script>
+	<script src="~/assets/libs/chartist/dist/chartist.min.js"></script>
+	<script src="~/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+	<script src="~/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js"></script>
+	<script src="~/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="~/dist/js/pages/dashboards/dashboard1.min.js"></script>
+	<script>
+		function openCreateFriendshipModal() {
+			// Show the modal
+			$('#createFriendshipModal').modal('show');
+		}
+	</script>
+	@* Handle drop down list username *@
+	<script>
+		function getUserID(select) {
+			var selectedUserID = select.value;
+			document.getElementById("selectedUserID").value = selectedUserID;
+		}
+	</script>
+	@* Handle create friendship *@
+	<script>
+		$(function () {
+			$('#btnCreateFriendship').click(function () {
+				// Check if the user has agreed to the terms and conditions
+				if ($('#agreeCheckbox').is(':checked')) {
+					$.ajax({
+						url: '/Friendship/CreateFriendship',
+						type: 'POST',
+						data: { agreed: true }, // You can pass any necessary data here
+						success: function (response) {
+							// Handle success response
+							$('#createFriendshipModal').modal('hide');
+							$('#success-alert-modal').modal('show');
+
+							// Reload the page after the user clicks "Continue" on the modal
+							$('#success-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						},
+						error: function (xhr, status, error) {
+							// Handle error response
+							$('#danger-alert-modal').modal('show');
+							$('#danger-alert-modal').on('hidden.bs.modal', function () {
+								location.reload();
+							});
+						}
+					});
+				} else {
+					// If the user has not agreed to the terms and conditions, show an alert
+					alert('Please agree to the Terms and Conditions.');
+				}
+			});
+		});
+	</script>
+	@* Handle send request *@
+	<script>
+		// JavaScript to handle form submission via AJAX
+		$(function () {
+			$('#btnSendRequest').click(function () {
+				$.ajax({
+					url: '@Url.Action("SendRequest", "Friendship")',
+					type: 'POST',
+					data: $('#sendRequestForm').serialize(),
+					success: function (response) {
+						// Handle success response
+						$('#success-alert-modal').modal('show');
+
+						// Reload the page after the user clicks "Continue" on the modal
+						$('#success-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					},
+					error: function (xhr, status, error) {
+						$('#danger-alert-modal').modal('show');
+						// Handle error response
+						$('#danger-alert-modal').on('hidden.bs.modal', function () {
+							location.reload();
+						});
+					}
+				});
+			});
+		});
+	</script>
+	@* Handle accepting/ rejecting friend request *@
+	<script>
+		$('.accept-request').click(function () {
+			// Get the request id from the data attribute
+			var requestId = $(this).data('request-id');
+
+			// Send a POST request to the controller action
+			$.ajax({
+				url: '@Url.Action("AcceptFriendRequest", "Friendship")', // Replace ControllerName with the actual name of your controller
+				type: 'POST',
+				data: { requestId: requestId }, // Send the request id as data
+				success: function (response) {
+					// Handle success response
+					$('#success-alert-modal').modal('show');
+
+					// Reload the page after the user clicks "Continue" on the modal
+					$('#success-alert-modal').on('hidden.bs.modal', function () {
+						location.reload();
+					});
+				},
+				error: function (xhr, status, error) {
+					$('#danger-alert-modal').modal('show');
+					// Handle error response
+					$('#danger-alert-modal').on('hidden.bs.modal', function () {
+						location.reload();
+					});
+				}
+			});
+		});
+
+		$('.reject-request').click(function () {
+			// Get the request id from the data attribute
+			var requestId = $(this).data('request-id');
+
+			// Send a POST request to the controller action
+			$.ajax({
+				url: '@Url.Action("RejectFriendRequest", "Friendship")', // Replace ControllerName with the actual name of your controller
+				type: 'POST',
+				data: { requestId: requestId }, // Send the request id as data
+				success: function (response) {
+					// Handle success response
+					$('#success-alert-modal').modal('show');
+
+					// Reload the page after the user clicks "Continue" on the modal
+					$('#success-alert-modal').on('hidden.bs.modal', function () {
+						location.reload();
+					});
+				},
+				error: function (xhr, status, error) {
+					$('#danger-alert-modal').modal('show');
+					// Handle error response
+					$('#danger-alert-modal').on('hidden.bs.modal', function () {
+						location.reload();
+					});
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>
+
+

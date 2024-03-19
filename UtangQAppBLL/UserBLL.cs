@@ -110,7 +110,49 @@ namespace UtangQAppBLL
             }
         }
 
-        public UserDTO LoginUser(string Username, string UserPassword)
+		public IEnumerable<UserDTO> GetFriends(int FriendshipID)
+		{
+			List<UserDTO> userDTOs = new List<UserDTO>();
+			var usersDAL = _userDAL.GetFriends(FriendshipID);
+			foreach (var user in usersDAL)
+			{
+				UserDTO userDTO = new UserDTO
+				{
+					UserID = user.UserID,
+					Username = user.Username,
+					UserPassword = user.UserPassword,
+					UserEmail = user.UserEmail,
+					UserFullName = user.UserFullName,
+					UserPhoneNumber = user.UserPhoneNumber,
+					IsLocked = user.IsLocked
+				};
+				userDTOs.Add(userDTO);
+			}
+			return userDTOs;
+		}
+
+		public IEnumerable<UserDTO> GetNonFriends(int FriendshipID)
+		{
+			List<UserDTO> userDTOs = new List<UserDTO>();
+			var usersDAL = _userDAL.GetNonFriends(FriendshipID);
+			foreach (var user in usersDAL)
+			{
+				UserDTO userDTO = new UserDTO
+				{
+					UserID = user.UserID,
+					Username = user.Username,
+					UserPassword = user.UserPassword,
+					UserEmail = user.UserEmail,
+					UserFullName = user.UserFullName,
+					UserPhoneNumber = user.UserPhoneNumber,
+					IsLocked = user.IsLocked
+				};
+				userDTOs.Add(userDTO);
+			}
+			return userDTOs;
+		}
+
+		public UserDTO LoginUser(string Username, string UserPassword)
         {
             UserDTO userDTO = null;
             try

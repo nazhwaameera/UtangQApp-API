@@ -12,5 +12,8 @@ namespace UtangQAppBLL.Interfaces.Transaction
         IEnumerable<BillRecipientDTO> GetBillRecipientsByBillID(int BillID);
         void UpdateBillRecipientPaymentStatus(int BillRecipientID, int NewStatusID);
         IEnumerable<BillRecipientDTO> ReadBillRecipientByRecipientUserID(int RecipientUserID);
+        IEnumerable<BillRecipientWithDescDTO> ReadBillRecipientByRecipientUserIDWithDescription(int RecipientUserID);
+        void HandleIncomingBillRecipient(int BillRecipientID, int NewStatusID);
+        decimal TotalBillRecipientAmountByBillID(int BillID);
     }
 }
