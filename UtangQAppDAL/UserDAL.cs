@@ -127,7 +127,7 @@ namespace UtangQAppDAL
                     UserFullName = entity.UserFullName,
                     UserPhoneNumber = entity.UserPhoneNumber,
                     IsLocked = entity.IsLocked
-    };
+                };
 
                 try
                 {
